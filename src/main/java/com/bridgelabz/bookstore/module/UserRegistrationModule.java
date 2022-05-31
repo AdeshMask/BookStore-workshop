@@ -39,4 +39,13 @@ public class UserRegistrationModule {
         this.password = newUserRegistartionModule.password;
         this.emailId = newUserRegistartionModule.emailId;
     }
+
+    public UserRegistrationModule(Integer id, UserDTO userDTO) {
+        this.id = id;
+        this.fullName = userDTO.fullName;
+        this.mobileNumber = userDTO.mobileNumber;
+        this.userName = userDTO.userName;
+        this.password = userDTO.password;
+        this.emailId = userDTO.emailId;
+    }
 }

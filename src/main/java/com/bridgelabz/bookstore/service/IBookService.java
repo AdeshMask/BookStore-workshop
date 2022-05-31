@@ -8,7 +8,7 @@ import java.util.List;
 public interface IBookService {
     Object addBook(BookModule newBookModule);
 
-    Object searchById(Integer id);
+    public BookModule getBookById(int bookId);
 
     Object searchAll();
 

@@ -1,8 +1,19 @@
 package com.bridgelabz.bookstore.service;
 
+import com.bridgelabz.bookstore.dto.LoginDTO;
+import com.bridgelabz.bookstore.dto.UserDTO;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
-import org.springframework.stereotype.Service;
 
 public interface IUserRegistration {
     Object addPerson(UserRegistrationModule newUserRegistartionModule);
+
+    Object update(Integer id, UserDTO userDTO);
+
+    String userLogin(LoginDTO loginDTO);
+
+    Object searchAll();
+
+    UserRegistrationModule getUserById(int userId);
+
+//    Optional<UserRegistration> userLogin(LoginDTO loginDTO);
 }

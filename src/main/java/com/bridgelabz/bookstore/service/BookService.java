@@ -1,9 +1,9 @@
 package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.dto.BookDTO;
+import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
 import com.bridgelabz.bookstore.module.BookModule;
 import com.bridgelabz.bookstore.reository.BookRepo;
-import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +22,9 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public Object searchById(Integer id) {
-        if (bookRepo.findById(id).isPresent()){
-            return bookRepo.findById(id);
-        }
-        return null;
+    public BookModule getBookById(int bookId){
+        return bookRepo.findById(bookId).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + bookId + " does not exist in database..!"));
+
     }
 
     @Override
@@ -41,7 +39,7 @@ public class BookService implements IBookService{
             BookModule search = bookRepo.save(newBookModule);
             return "Done " + search;
         }
-        return null;
+        throw (new BookStoreExceptionHandler("Record not Found"));
     }
 
     @Override
@@ -51,7 +49,7 @@ public class BookService implements IBookService{
             bookRepo.delete(newBookModule.get());
             return "Record is deleted with id ";
         }
-        return null;
+        throw (new BookStoreExceptionHandler("Record not Found"));
     }
     public List<BookModule> findBookByName(String bookName) {
         List<BookModule> book = bookRepo.findBookByName(bookName);
@@ -59,7 +57,7 @@ public class BookService implements IBookService{
         if (book.size() != 0) {
             return book;
 
-        } return null;
+        } throw (new BookStoreExceptionHandler("Record not Found"));
     }
 
     @Override

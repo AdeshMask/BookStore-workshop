@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface BookRepo extends JpaRepository<BookModule, Integer> {
-    @Query(value = "SELECT * FROM book_module e WHERE e.name = :bName", nativeQuery = true)
-    List<BookModule> findBookByName(@Param("bName") String name);
+        @Query(value = "SELECT * FROM book_module e WHERE e.name = :bName", nativeQuery = true)
+        List<BookModule> findBookByName(@Param("bName") String name);
 
     @Query("FROM BookModule ORDER BY bookName ASC")
     List<BookModule> sortByBookName();

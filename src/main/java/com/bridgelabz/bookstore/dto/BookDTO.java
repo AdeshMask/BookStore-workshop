@@ -5,7 +5,6 @@ import com.bridgelabz.bookstore.module.BookModule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.ElementCollection;
 
 @Data
@@ -17,4 +16,5 @@ public class BookDTO {
     public String authorName;
     @ElementCollection
     public BookModule bookModule;
+    public int bookQuantity;
 }

@@ -2,16 +2,13 @@ package com.bridgelabz.bookstore.controller;
 
 import com.bridgelabz.bookstore.dto.BookDTO;
 import com.bridgelabz.bookstore.dto.RespnseDTO;
-import com.bridgelabz.bookstore.dto.UserDTO;
 import com.bridgelabz.bookstore.module.BookModule;
-import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -36,7 +33,7 @@ public class BookController {
     //----------------------------------------get-by-Id---------------------------
     @GetMapping("/get/{id}")
     public ResponseEntity<RespnseDTO> getAddressById(@PathVariable Integer id) {
-        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iBookService.searchById(id));
+        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iBookService.getBookById(id));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.CREATED);
     }
     //----------------------------------------get-by-Book---------------------------

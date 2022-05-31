@@ -7,5 +7,13 @@ import com.bridgelabz.bookstore.module.CartModule;
 public interface ICartService {
 //    Object saveBooking(CartModule cartModule);
 
-    Object addCart(CartDTO cartDTO);
+    CartModule addCart(CartDTO cartDTO);
+
+    Object getCartById(Integer id);
+
+    Object getAllCartItems();
+
+    Object removeById(Integer id);
+
+    Object update(Integer id, int quantity);
 }
