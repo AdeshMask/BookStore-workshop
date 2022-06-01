@@ -17,7 +17,7 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity<RespnseDTO> addCart(@RequestBody CartDTO cartDTO) {
-        RespnseDTO responseDTO = new RespnseDTO("Success", iCartService.addCart(cartDTO));
+        RespnseDTO responseDTO = new RespnseDTO("Cart Item add Successfull", iCartService.addCart(cartDTO));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
     //----------------------------------------get-by-Id---------------------------
@@ -30,7 +30,7 @@ public class CartController {
     //----------------------------------------Get-all------------------------------
     @GetMapping("/get-all")
     public ResponseEntity<RespnseDTO> getAllCartItems(){
-        RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iCartService.getAllCartItems());
+        RespnseDTO responseDTO = new RespnseDTO("Showing all the records..", iCartService.getAllCartItems());
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 
@@ -43,7 +43,7 @@ public class CartController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id){
-        RespnseDTO responseDTO = new RespnseDTO("", iCartService.removeById(id));
+        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successfull", iCartService.removeById(id));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 }

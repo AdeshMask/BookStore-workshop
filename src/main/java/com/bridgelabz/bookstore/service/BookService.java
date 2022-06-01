@@ -64,4 +64,9 @@ public class BookService implements IBookService{
     public Object sortByBookName() {
         return bookRepo.sortByBookName();
     }
+
+    @Override
+    public Object sortAscByBookPrice() {
+        return bookRepo.sortAscByBookPrice();
+    }
 }

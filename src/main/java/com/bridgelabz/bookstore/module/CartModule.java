@@ -33,9 +33,6 @@ public class CartModule {
     public CartModule() {
 
     }
-
-
-
     public CartModule(Integer id, int quantity) {
         this.cartId=id;
         this.quantity = quantity;

@@ -19,4 +19,6 @@ public interface IBookService {
     List<BookModule> findBookByName(String bookName);
 
     Object sortByBookName();
+
+    Object sortAscByBookPrice();
 }

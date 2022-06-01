@@ -58,13 +58,18 @@ public class BookController {
     //---------------------------------------Delete---------------------------------
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id){
-        RespnseDTO responseDTO = new RespnseDTO("", iBookService.removeById(id));
+        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successful", iBookService.removeById(id));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
     //---------------------------------------Sorting---------------------------------
     @GetMapping(value = "/sort")
     public ResponseEntity<RespnseDTO> sortAscByBookName(){
-        RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iBookService.sortByBookName());
+        RespnseDTO responseDTO = new RespnseDTO("Sorting The records by Name", iBookService.sortByBookName());
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+    }
+    @GetMapping(value = "/sortprice")
+    public ResponseEntity<RespnseDTO> sortAscByBookPrice(){
+        RespnseDTO responseDTO = new RespnseDTO("Sorting The records by Name", iBookService.sortAscByBookPrice());
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 }

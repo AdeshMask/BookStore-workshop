@@ -30,10 +30,30 @@ public class OrderData {
     public UserRegistrationModule userId;
 
     public String address;
+    boolean cancle = true;
 
-    public OrderData(OrderDTO orderDTO) {
+    float totalPrice;
+
+//    public OrderData(OrderDTO orderDTO) {
+//        this.orderId = getOrderId();
+//        this.bookId = orderDTO.getBookId();
+//        this.userId = orderDTO.getUserId();
+//    }
+
+    public OrderData(UserRegistrationModule userData, BookModule book, String address, float totalPrice) {
         this.orderId = getOrderId();
-        this.bookId = orderDTO.getBookId();
-        this.userId = orderDTO.getUserId();
+        this.bookId = book;
+        this.userId = userData;
+        this.address = address;
+        this.cancle = isCancle();
+        this.totalPrice = totalPrice;
     }
+    public OrderData(UserRegistrationModule userData, BookModule book, String address,boolean cancle) {
+        this.orderId = getOrderId();
+        this.bookId = book;
+        this.userId = userData;
+        this.address = address;
+        this.cancle = cancle;
+    }
+
 }
