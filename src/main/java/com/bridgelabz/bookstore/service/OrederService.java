@@ -47,7 +47,7 @@ public class OrederService implements IOrderService{
     }
 
     @Override
-    public OrderData cancleOrder(int id) {
+    public OrderData cancelOrder(int id) {
         OrderData order = getOrderID(id);
         order.setCancle(false);
         return order;

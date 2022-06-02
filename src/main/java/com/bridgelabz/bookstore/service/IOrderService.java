@@ -16,5 +16,5 @@ public interface IOrderService {
 
     List<OrderData> getAllOrders();
 
-    OrderData cancleOrder(int id);
+    OrderData cancelOrder(int id);
 }

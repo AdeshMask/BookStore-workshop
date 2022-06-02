@@ -15,6 +15,7 @@ public class OrderController {
     @Autowired
     IOrderService iOrderService;
 
+    //----------------------------------------Place The Order---------------------------
     @PostMapping("/add")
     public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO){
         RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iOrderService.placeOrder(orderDTO));
@@ -35,9 +36,10 @@ public class OrderController {
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 
+    //----------------------------------------Cancel The Order---------------------------
     @PutMapping("/cancle/{id}")
-    public ResponseEntity<RespnseDTO> cancleOrder(@PathVariable int id){
-        RespnseDTO responseDTO = new RespnseDTO("Order Cancled", iOrderService.cancleOrder(id));
+    public ResponseEntity<RespnseDTO> cancelOrder(@PathVariable int id){
+        RespnseDTO responseDTO = new RespnseDTO("Order Canceled", iOrderService.cancelOrder(id));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
 }

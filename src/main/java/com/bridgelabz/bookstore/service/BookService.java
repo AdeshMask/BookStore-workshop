@@ -70,3 +70,13 @@ public class BookService implements IBookService{
         return bookRepo.sortAscByBookPrice();
     }
 }
+
+//
+//<dependency>
+//<groupId>org.springframework.boot</groupId>
+//<artifactId>spring-boot-starter-mail</artifactId>
+//</dependency>
+
+
+//audspbiqadsxhodf
+//youtube.com/watch?v=ugIUObNHZdo

@@ -24,11 +24,11 @@ public class BookController {
 
     /*--------------------Post Operation-------------------*/
     @PostMapping("/add")
-    public ResponseEntity<RespnseDTO> addBook(@RequestBody BookDTO bookDTO){
-        BookModule newBookModule = new BookModule(bookDTO);
-        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iBookService.addBook(newBookModule));
-        return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
-    }
+        public ResponseEntity<RespnseDTO> addBook(@RequestBody BookDTO bookDTO){
+            BookModule newBookModule = new BookModule(bookDTO);
+            RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iBookService.addBook(newBookModule));
+            return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
+        }
 
     //----------------------------------------get-by-Id---------------------------
     @GetMapping("/get/{id}")
