@@ -9,10 +9,13 @@ import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.BookRepo;
 import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
 import com.bridgelabz.bookstore.reository.OrderRepo;
+import com.bridgelabz.bookstore.util.TokenUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrederService implements IOrderService{
@@ -30,14 +33,23 @@ public class OrederService implements IOrderService{
 
     @Autowired
     EmailService emailService;
+    @Autowired
+    TokenUtility tokenUtility;
 
     @Override
     public OrderData placeOrder(OrderDTO orderDTO) {
-        UserRegistrationModule userData = iUserRegistration.getUserById(orderDTO.getUserId());
-        BookModule book = iBookService.getBookById(orderDTO.getBookId());
-        float totalPrice = book.getPrice() * book.getBookQuantity();
-        OrderData order = new OrderData(userData, book, orderDTO.address,totalPrice);
-        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully!!", "Your order for book "+book.getBookName()+" is placed successfully. Total Price is "+totalPrice+".","mamoinuddin@gmail.com");
+        ArrayList<BookModule> bookList = new ArrayList<>();
+        UserRegistrationModule userData = iUserRegistration.getUserById(tokenUtility.createToken(orderDTO.getUserId()));
+        List<Integer> bookIdList = orderDTO.bookId;
+        List<Integer> quantity = orderDTO.quantity;
+        int totalPrice = 0;
+        for (int i = 0; i < bookIdList.size(); i++) {
+            bookList.add(iBookService.getBookById(bookIdList.get(i)));
+            totalPrice += iBookService.getBookById(bookIdList.get(i)).getPrice()* (quantity.get(i));
+        }
+        List<String> nameList = bookList.stream().map(BookModule::getBookName).collect(Collectors.toList());
+        OrderData order = new OrderData(userData, orderDTO.getBookId() ,orderDTO.address, orderDTO.quantity);
+        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully!!", "Order placed for books" + nameList+"Total Price for it is "+totalPrice);
         return orderRepo.save(order);
     }
 

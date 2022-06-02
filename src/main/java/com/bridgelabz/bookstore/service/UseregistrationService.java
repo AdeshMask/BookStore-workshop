@@ -2,9 +2,11 @@ package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.dto.LoginDTO;
 import com.bridgelabz.bookstore.dto.UserDTO;
+import com.bridgelabz.bookstore.email.EmailService;
 import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
+import com.bridgelabz.bookstore.util.TokenUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,19 @@ public class UseregistrationService implements IUserRegistration{
     @Autowired
     IUsrRegistrationRepo iUsrRegistrationRepo;
 
+    @Autowired
+    TokenUtility tokenUtility;
+    @Autowired
+    EmailService emailService;
+
+
     @Override
     public Object addPerson(UserRegistrationModule newUserRegistartionModule) {
-        UserRegistrationModule addressBookModule = new UserRegistrationModule(newUserRegistartionModule);
-        iUsrRegistrationRepo.save(addressBookModule);
-        return addressBookModule;
+        UserRegistrationModule userRegistrationModule = new UserRegistrationModule(newUserRegistartionModule);
+        iUsrRegistrationRepo.save(userRegistrationModule);
+        String token=tokenUtility.createToken(userRegistrationModule.getId());
+        emailService.sendEmail("adesh.maske@bridgelabz.com", "Token", "Registeration SuccessFull and generated token is--> "+token);
+        return userRegistrationModule;
     }
 
     @Override
@@ -51,7 +61,8 @@ public class UseregistrationService implements IUserRegistration{
     }
 
     @Override
-    public UserRegistrationModule getUserById(int id) {
+    public UserRegistrationModule getUserById(String token) {
+        int id=tokenUtility.decodeToken(token);
         return iUsrRegistrationRepo.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("User  with id " + id + " does not exist in database..!"));
 
     }

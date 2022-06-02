@@ -8,6 +8,7 @@ import com.bridgelabz.bookstore.module.BookModule;
 import com.bridgelabz.bookstore.module.CartModule;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.CartRepo;
+import com.bridgelabz.bookstore.util.TokenUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,11 @@ public class CartService implements ICartService{
     @Autowired
     IBookService iBookService;
 
-
+    @Autowired
+    TokenUtility tokenUtility;
     @Override
     public CartModule addCart(CartDTO cartDTO) {
-        UserRegistrationModule user = iUserRegistration.getUserById(cartDTO.getUserId());
+        UserRegistrationModule user = iUserRegistration.getUserById(tokenUtility.createToken(cartDTO.getUserId()));
         BookModule book = iBookService.getBookById(cartDTO.getBookId());
         CartModule cart = new CartModule(user , book, cartDTO.quantity);
         return cartRepo.save(cart);

@@ -13,7 +13,7 @@ public interface IUserRegistration {
 
     Object searchAll();
 
-    UserRegistrationModule getUserById(int userId);
+    UserRegistrationModule getUserById(String token);
 
 //    Optional<UserRegistration> userLogin(LoginDTO loginDTO);
 }

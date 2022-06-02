@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,10 +21,9 @@ public class OrderData {
     @GeneratedValue
     public int orderId;
 
-    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bookId")
-    public BookModule bookId;
+    @ElementCollection
+    @CollectionTable
+    public List<Integer> bookId;
 
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @OneToOne(fetch = FetchType.LAZY)
@@ -30,30 +31,20 @@ public class OrderData {
     public UserRegistrationModule userId;
 
     public String address;
-    boolean cancle = true;
 
+    @ElementCollection
+    public List<Integer> quantity;
+    boolean cancle = true;
+    public LocalDate orderDate= LocalDate.now();
     float totalPrice;
 
-//    public OrderData(OrderDTO orderDTO) {
-//        this.orderId = getOrderId();
-//        this.bookId = orderDTO.getBookId();
-//        this.userId = orderDTO.getUserId();
-//    }
-
-    public OrderData(UserRegistrationModule userData, BookModule book, String address, float totalPrice) {
+    public OrderData(UserRegistrationModule userData, List<Integer> bookId, String address, List<Integer> quantity) {
         this.orderId = getOrderId();
-        this.bookId = book;
+        this.bookId = bookId;
         this.userId = userData;
         this.address = address;
         this.cancle = isCancle();
-        this.totalPrice = totalPrice;
+        this.orderDate = getOrderDate();
+        this.quantity = quantity;
     }
-    public OrderData(UserRegistrationModule userData, BookModule book, String address,boolean cancle) {
-        this.orderId = getOrderId();
-        this.bookId = book;
-        this.userId = userData;
-        this.address = address;
-        this.cancle = cancle;
-    }
-
 }

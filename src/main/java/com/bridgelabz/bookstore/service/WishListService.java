@@ -9,6 +9,7 @@ import com.bridgelabz.bookstore.module.WishList;
 import com.bridgelabz.bookstore.reository.BookRepo;
 import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
 import com.bridgelabz.bookstore.reository.WishListRepo;
+import com.bridgelabz.bookstore.util.TokenUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,11 @@ public class WishListService implements IWishList {
     IBookService iBookService;
     @Autowired
     BookRepo bookRepo;
+    @Autowired
+    TokenUtility tokenUtility;
     @Override
     public WishList addItem(WishListDTO wishListDTO) {
-        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(wishListDTO.userId);
+        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(tokenUtility.createToken(wishListDTO.userId));
         BookModule bookService = iBookService.getBookById(wishListDTO.getBookId());
         WishList wishList = new WishList(userRegistrationModule, bookService);
         return wishListRepo.save(wishList);
