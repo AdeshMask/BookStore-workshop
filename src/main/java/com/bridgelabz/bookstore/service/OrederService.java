@@ -1,6 +1,7 @@
 package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.dto.OrderDTO;
+import com.bridgelabz.bookstore.email.EmailService;
 import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
 import com.bridgelabz.bookstore.module.BookModule;
 import com.bridgelabz.bookstore.module.OrderData;
@@ -27,12 +28,16 @@ public class OrederService implements IOrderService{
     @Autowired
     IUsrRegistrationRepo iUsrRegistrationRepo;
 
+    @Autowired
+    EmailService emailService;
+
     @Override
     public OrderData placeOrder(OrderDTO orderDTO) {
         UserRegistrationModule userData = iUserRegistration.getUserById(orderDTO.getUserId());
         BookModule book = iBookService.getBookById(orderDTO.getBookId());
         float totalPrice = book.getPrice() * book.getBookQuantity();
         OrderData order = new OrderData(userData, book, orderDTO.address,totalPrice);
+        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully!!", "Your order for book "+book.getBookName()+" is placed successfully. Total Price is "+totalPrice+".","mamoinuddin@gmail.com");
         return orderRepo.save(order);
     }
 
