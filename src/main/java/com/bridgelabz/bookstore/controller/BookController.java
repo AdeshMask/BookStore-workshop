@@ -2,7 +2,6 @@ package com.bridgelabz.bookstore.controller;
 
 import com.bridgelabz.bookstore.dto.BookDTO;
 import com.bridgelabz.bookstore.dto.RespnseDTO;
-import com.bridgelabz.bookstore.module.BookModule;
 import com.bridgelabz.bookstore.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,15 +23,14 @@ public class BookController {
 
     /*--------------------Post Operation-------------------*/
     @PostMapping("/add")
-        public ResponseEntity<RespnseDTO> addBook(@RequestBody BookDTO bookDTO){
-            BookModule newBookModule = new BookModule(bookDTO);
-            RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iBookService.addBook(newBookModule));
+        public ResponseEntity<RespnseDTO> addBook(@RequestBody BookDTO bookDTO,String token){
+            RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iBookService.addBook(bookDTO,token));
             return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
         }
 
     //----------------------------------------get-by-Id---------------------------
     @GetMapping("/get/{id}")
-    public ResponseEntity<RespnseDTO> getAddressById(@PathVariable Integer id) {
+    public ResponseEntity<RespnseDTO> getBookById(@PathVariable Integer id) {
         RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iBookService.getBookById(id));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.CREATED);
     }
@@ -44,21 +42,21 @@ public class BookController {
     }
     //----------------------------------------Get-all------------------------------
     @GetMapping("/get-all")
-    public ResponseEntity<RespnseDTO> getAddress(){
+    public ResponseEntity<RespnseDTO> getAllBooks(){
         RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iBookService.searchAll());
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
     //-----------------------------------------Update-------------------------------
     @PutMapping("/edit/{id}")
-    public ResponseEntity<RespnseDTO> editData(@PathVariable Integer id,@RequestBody BookDTO bookDTO) {
-        RespnseDTO responseDTO = new RespnseDTO("Successfully updated",iBookService.update(id,bookDTO));
+    public ResponseEntity<RespnseDTO> editData(@PathVariable Integer id,@RequestBody BookDTO bookDTO, String token) {
+        RespnseDTO responseDTO = new RespnseDTO("Successfully updated",iBookService.update(id,bookDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 
     //---------------------------------------Delete---------------------------------
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id){
-        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successful", iBookService.removeById(id));
+    public ResponseEntity<RespnseDTO> deleteBook(@PathVariable Integer id,@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successful", iBookService.removeById(id,token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
     //---------------------------------------Sorting---------------------------------
@@ -70,6 +68,12 @@ public class BookController {
     @GetMapping(value = "/sortprice")
     public ResponseEntity<RespnseDTO> sortAscByBookPrice(){
         RespnseDTO responseDTO = new RespnseDTO("Sorting The records by Name", iBookService.sortAscByBookPrice());
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+    }
+    //---------------------------------------Quantity Update---------------------------------
+    @GetMapping("/")
+    public ResponseEntity<RespnseDTO> updateQuantityById(int id, int quantity, String token){
+        RespnseDTO responseDTO = new RespnseDTO("Quantity Update Successfull", iBookService.updateQuantityById(id,quantity,token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 }

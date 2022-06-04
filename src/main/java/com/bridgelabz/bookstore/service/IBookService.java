@@ -6,19 +6,21 @@ import com.bridgelabz.bookstore.module.BookModule;
 import java.util.List;
 
 public interface IBookService {
-    Object addBook(BookModule newBookModule);
+    Object addBook(BookDTO bookDTO , String token);
 
     public BookModule getBookById(int bookId);
 
     Object searchAll();
 
-    Object update(Integer id, BookDTO bookDTO);
+    Object update(Integer id, BookDTO bookDTO,String token);
 
-    Object removeById(Integer id);
+    Object removeById(Integer id, String token);
 
     List<BookModule> findBookByName(String bookName);
 
     Object sortByBookName();
 
     Object sortAscByBookPrice();
+
+    public BookModule updateQuantityById(int id, int quantity, String token);
 }

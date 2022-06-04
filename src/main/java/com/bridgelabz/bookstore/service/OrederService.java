@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrederService implements IOrderService{
@@ -37,25 +36,33 @@ public class OrederService implements IOrderService{
     TokenUtility tokenUtility;
 
     @Override
-    public OrderData placeOrder(OrderDTO orderDTO) {
+    public OrderData placeOrder(OrderDTO orderDTO,String token) {
         ArrayList<BookModule> bookList = new ArrayList<>();
-        UserRegistrationModule userData = iUserRegistration.getUserById(tokenUtility.createToken(orderDTO.getUserId()));
+        UserRegistrationModule userData = iUserRegistration.getUserById(token);
         List<Integer> bookIdList = orderDTO.bookId;
         List<Integer> quantity = orderDTO.quantity;
         int totalPrice = 0;
         for (int i = 0; i < bookIdList.size(); i++) {
-            bookList.add(iBookService.getBookById(bookIdList.get(i)));
-            totalPrice += iBookService.getBookById(bookIdList.get(i)).getPrice()* (quantity.get(i));
+            if (quantity.get(i) <= iBookService.getBookById(bookIdList.get(i)).getBookQuantity()) {
+                bookList.add(iBookService.getBookById(bookIdList.get(i)));
+                totalPrice += iBookService.getBookById(bookIdList.get(i)).getPrice() * (quantity.get(i));
+                iBookService.updateQuantityById(bookIdList.get(i), iBookService.getBookById(bookIdList.get(i)).getBookQuantity() - (quantity.get(i)), token);
+            } else
+                throw new BookStoreExceptionHandler("Please select a small quantity to order as stocks are limited: Current stock for book id: "
+                        + bookIdList.get(i) + " is " + iBookService.getBookById(bookIdList.get(i)).getBookQuantity() + ".");
         }
-        List<String> nameList = bookList.stream().map(BookModule::getBookName).collect(Collectors.toList());
-        OrderData order = new OrderData(userData, orderDTO.getBookId() ,orderDTO.address, orderDTO.quantity);
-        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully!!", "Order placed for books" + nameList+"Total Price for it is "+totalPrice);
+        List<String> nameList = bookList.stream().map(BookModule::getBookName).toList();
+        OrderData order = new OrderData(userData, orderDTO.getBookId(), orderDTO.address, orderDTO.getQuantity());
+
+        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully on ", "Order placed on" + " for books" + nameList + ". Total price is " + totalPrice);
         return orderRepo.save(order);
     }
 
     @Override
-    public OrderData getOrderID(Integer id) {
-        return orderRepo.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + id + " does not exist in database..!"));
+    public OrderData getOrderID(String token) {
+        int id=tokenUtility.decodeToken(token);
+        return orderRepo.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + id +
+                " does not exist in database..!"));
     }
 
     @Override
@@ -64,8 +71,8 @@ public class OrederService implements IOrderService{
     }
 
     @Override
-    public OrderData cancelOrder(int id) {
-        OrderData order = getOrderID(id);
+    public OrderData cancelOrder(String token) {
+        OrderData order = getOrderID(token);
         order.setCancle(false);
         return order;
     }

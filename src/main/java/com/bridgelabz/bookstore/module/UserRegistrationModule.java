@@ -21,6 +21,7 @@ public class UserRegistrationModule {
     String userName;
     String password;
     String emailId;
+//    boolean isAdmin = false;
 
     public UserRegistrationModule(UserDTO userDTO) {
         this.id = id;
@@ -29,6 +30,7 @@ public class UserRegistrationModule {
         this.userName = userDTO.userName;
         this.password = userDTO.password;
         this.emailId = userDTO.emailId;
+//        this.isAdmin = isAdmin();
     }
 
     public UserRegistrationModule(UserRegistrationModule newUserRegistartionModule) {
@@ -38,6 +40,7 @@ public class UserRegistrationModule {
         this.userName = newUserRegistartionModule.userName;
         this.password = newUserRegistartionModule.password;
         this.emailId = newUserRegistartionModule.emailId;
+//        this.isAdmin = isAdmin();
     }
 
     public UserRegistrationModule(Integer id, UserDTO userDTO) {
@@ -47,5 +50,6 @@ public class UserRegistrationModule {
         this.userName = userDTO.userName;
         this.password = userDTO.password;
         this.emailId = userDTO.emailId;
+//        this.isAdmin = isAdmin();
     }
 }

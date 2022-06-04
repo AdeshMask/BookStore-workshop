@@ -1,8 +1,10 @@
 package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.dto.BookDTO;
+import com.bridgelabz.bookstore.email.EmailService;
 import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
 import com.bridgelabz.bookstore.module.BookModule;
+import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.BookRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,20 @@ import java.util.Optional;
 public class BookService implements IBookService{
     @Autowired
     BookRepo bookRepo;
+    @Autowired
+    IUserRegistration iUserRegistration;
+    @Autowired
+    EmailService emailService;
+
     @Override
-    public Object addBook(BookModule newBookModule) {
-        BookModule bookModule = new BookModule(newBookModule);
-        bookRepo.save(bookModule);
-        return bookModule;
+    public Object addBook(BookDTO bookDTO,String token) {
+        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
+        BookModule bookModule = new BookModule(bookDTO);
+        if (userRegistrationModule != null) {
+            emailService.sendEmail(userRegistrationModule.getEmailId(), "Book Created successfully!!",
+                    "User " + userRegistrationModule.getFullName() + " has added new book successfully " + bookModule + ".");
+            return bookRepo.save(bookModule);
+        } else throw new BookStoreExceptionHandler("Invalid token or not an Admin");
     }
 
     @Override
@@ -33,19 +44,24 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public Object update(Integer id, BookDTO bookDTO) {
-        if (bookRepo.findById(id).isPresent()) {
+    public Object update(Integer id, BookDTO bookDTO, String token) {
+        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
+        if (bookRepo.findById(id).isPresent() && userRegistrationModule != null) {
             BookModule newBookModule = new BookModule(id, bookDTO);
             BookModule search = bookRepo.save(newBookModule);
+            emailService.sendEmail(userRegistrationModule.getEmailId(), "Book updated successfully!!",
+                    "User " + userRegistrationModule.getFullName() + " has updated book successfully " + search + ".");
+
             return "Done " + search;
         }
         throw (new BookStoreExceptionHandler("Record not Found"));
     }
 
     @Override
-    public Object removeById(Integer id) {
+    public Object removeById(Integer id, String token) {
+        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
         Optional<BookModule> newBookModule = bookRepo.findById(id);
-        if (newBookModule.isPresent()){
+        if (newBookModule.isPresent() && userRegistrationModule != null){
             bookRepo.delete(newBookModule.get());
             return "Record is deleted with id ";
         }
@@ -69,14 +85,13 @@ public class BookService implements IBookService{
     public Object sortAscByBookPrice() {
         return bookRepo.sortAscByBookPrice();
     }
+
+    public BookModule updateQuantityById(int id, int quantity, String token) throws BookStoreExceptionHandler {
+        UserRegistrationModule userData = iUserRegistration.getUserById((token));
+        if (bookRepo.findById(id).isPresent() && userData != null) {
+            BookModule book = this.getBookById(id);
+            book.setBookQuantity(quantity);
+            return bookRepo.save(book);
+        } else throw new BookStoreExceptionHandler("No book found with the given id or you are not an admin user.");
+    }
 }
-
-//
-//<dependency>
-//<groupId>org.springframework.boot</groupId>
-//<artifactId>spring-boot-starter-mail</artifactId>
-//</dependency>
-
-
-//audspbiqadsxhodf
-//youtube.com/watch?v=ugIUObNHZdo

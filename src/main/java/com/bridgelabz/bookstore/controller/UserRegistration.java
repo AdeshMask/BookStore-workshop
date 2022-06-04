@@ -48,7 +48,11 @@ public class UserRegistration {
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 
-
+    @GetMapping("/get/{token}")
+    public ResponseEntity<RespnseDTO> getById(@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iUserRegistration.getUserById(token));
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+    }
 
     @PostMapping("/userlogin")
     public String userLogin(@RequestBody LoginDTO loginDTO) {

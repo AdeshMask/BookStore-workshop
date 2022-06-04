@@ -17,15 +17,15 @@ public class OrderController {
 
     //----------------------------------------Place The Order---------------------------
     @PostMapping("/add")
-    public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO){
-        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iOrderService.placeOrder(orderDTO));
+    public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO,@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iOrderService.placeOrder(orderDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
 
     //----------------------------------------get-by-Id---------------------------
     @GetMapping("/get/{id}")
-    public ResponseEntity<RespnseDTO> getOrderById(@PathVariable Integer id) {
-        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iOrderService.getOrderID(id));
+    public ResponseEntity<RespnseDTO> getOrderById(@RequestParam String token) {
+        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iOrderService.getOrderID(token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.CREATED);
     }
 
@@ -38,8 +38,8 @@ public class OrderController {
 
     //----------------------------------------Cancel The Order---------------------------
     @PutMapping("/cancle/{id}")
-    public ResponseEntity<RespnseDTO> cancelOrder(@PathVariable int id){
-        RespnseDTO responseDTO = new RespnseDTO("Order Canceled", iOrderService.cancelOrder(id));
+    public ResponseEntity<RespnseDTO> cancelOrder(@PathVariable String token){
+        RespnseDTO responseDTO = new RespnseDTO("Order Canceled", iOrderService.cancelOrder(token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
 }

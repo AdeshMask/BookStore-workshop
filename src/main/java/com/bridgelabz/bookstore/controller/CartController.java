@@ -1,6 +1,5 @@
 package com.bridgelabz.bookstore.controller;
 
-import com.bridgelabz.bookstore.dto.BookDTO;
 import com.bridgelabz.bookstore.dto.CartDTO;
 import com.bridgelabz.bookstore.dto.RespnseDTO;
 import com.bridgelabz.bookstore.service.ICartService;
@@ -16,14 +15,14 @@ public class CartController {
     ICartService iCartService;
 
     @PostMapping("/add")
-    public ResponseEntity<RespnseDTO> addCart(@RequestBody CartDTO cartDTO) {
-        RespnseDTO responseDTO = new RespnseDTO("Cart Item add Successfull", iCartService.addCart(cartDTO));
+    public ResponseEntity<RespnseDTO> addCart(@RequestBody CartDTO cartDTO,@RequestParam String token) {
+        RespnseDTO responseDTO = new RespnseDTO("Cart Item add Successfull", iCartService.addCart(cartDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
     //----------------------------------------get-by-Id---------------------------
-    @GetMapping("/get/{id}")
-    public ResponseEntity<RespnseDTO> getAddressById(@PathVariable Integer id) {
-        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iCartService.getCartById(id));
+    @GetMapping("/get/{token}")
+    public ResponseEntity<RespnseDTO> getAddressById(@RequestParam String token) {
+        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iCartService.getCartById(token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.CREATED);
     }
 
@@ -36,14 +35,14 @@ public class CartController {
 
     //-----------------------------------------Update-------------------------------
     @PutMapping("/edit/{id}")
-    public ResponseEntity<RespnseDTO> editData(@PathVariable Integer id,@RequestBody  int quantity) {
-        RespnseDTO responseDTO = new RespnseDTO("Successfully updated",iCartService.update(id,quantity));
+    public ResponseEntity<RespnseDTO> editData(@PathVariable Integer id,@RequestBody  int quantity,@RequestParam String token) {
+        RespnseDTO responseDTO = new RespnseDTO("Successfully updated",iCartService.update(id,quantity,token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id){
-        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successfull", iCartService.removeById(id));
+    public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id,String token){
+        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successfull", iCartService.removeById(id,token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 }

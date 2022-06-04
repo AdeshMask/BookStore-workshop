@@ -30,8 +30,9 @@ public class UseregistrationService implements IUserRegistration{
         UserRegistrationModule userRegistrationModule = new UserRegistrationModule(newUserRegistartionModule);
         iUsrRegistrationRepo.save(userRegistrationModule);
         String token=tokenUtility.createToken(userRegistrationModule.getId());
-        emailService.sendEmail("adesh.maske@bridgelabz.com", "Token", "Registeration SuccessFull and generated token is--> "+token);
-        return userRegistrationModule;
+        emailService.sendEmail(userRegistrationModule.getEmailId(), "Token",
+                "Registeration SuccessFull and generated token is--> "+token);
+        return token;
     }
 
     @Override

@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface IOrderService {
 
-    OrderData placeOrder(OrderDTO orderDTO);
+    OrderData placeOrder(OrderDTO orderDTO,String token);
 
-    OrderData getOrderID(Integer id);
+    OrderData getOrderID(String token);
 
     List<OrderData> getAllOrders();
 
-    OrderData cancelOrder(int id);
+    OrderData cancelOrder(String token);
 }

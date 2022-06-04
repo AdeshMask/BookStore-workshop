@@ -9,6 +9,7 @@ import com.bridgelabz.bookstore.module.CartModule;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.CartRepo;
 import com.bridgelabz.bookstore.util.TokenUtility;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,15 +28,16 @@ public class CartService implements ICartService{
     @Autowired
     TokenUtility tokenUtility;
     @Override
-    public CartModule addCart(CartDTO cartDTO) {
-        UserRegistrationModule user = iUserRegistration.getUserById(tokenUtility.createToken(cartDTO.getUserId()));
+    public CartModule addCart(CartDTO cartDTO,String token) {
+        UserRegistrationModule user = iUserRegistration.getUserById(token);
         BookModule book = iBookService.getBookById(cartDTO.getBookId());
         CartModule cart = new CartModule(user , book, cartDTO.quantity);
         return cartRepo.save(cart);
     }
 
     @Override
-    public Object getCartById(Integer id) {
+    public Object getCartById(String token) {
+        int id=tokenUtility.decodeToken(token);
         return cartRepo.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + id + " does not exist in database..!"));
 
     }
@@ -46,9 +48,10 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Object removeById(Integer id) {
+    public Object removeById(Integer id,String token) {
+        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
         Optional<CartModule> cartModule = cartRepo.findById(id);
-        if (cartModule.isPresent()){
+        if (cartModule.isPresent() && userRegistrationModule != null){
             cartRepo.delete(cartModule.get());
             return "Record is deleted with id ";
         }
@@ -56,8 +59,9 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Object update(Integer id, int quantity) {
-        if (cartRepo.findById(id).isPresent()) {
+    public Object update(Integer id, int quantity,String token) {
+        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
+        if (cartRepo.findById(id).isPresent() && userRegistrationModule != null) {
             CartModule cartModule = new CartModule(id, quantity);
             CartModule search = cartRepo.save(cartModule);
             return "Done " + search;
