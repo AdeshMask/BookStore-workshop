@@ -18,7 +18,7 @@ public class OrderController {
     //----------------------------------------Place The Order---------------------------
     @PostMapping("/add")
     public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO,@RequestParam String token){
-        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iOrderService.placeOrder(orderDTO,token));
+        RespnseDTO responseDTO = new RespnseDTO("Order Place Successful", iOrderService.placeOrder(orderDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
 
