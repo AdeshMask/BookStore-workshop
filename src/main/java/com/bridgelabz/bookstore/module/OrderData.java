@@ -38,7 +38,7 @@ public class OrderData {
     public LocalDate orderDate= LocalDate.now();
     float totalPrice;
 
-    public OrderData(UserRegistrationModule userData, List<Integer> bookId, String address, List<Integer> quantity) {
+    public OrderData(UserRegistrationModule userData, List<Integer> bookId, String address, List<Integer> quantity,float totalPrice) {
         this.orderId = getOrderId();
         this.bookId = bookId;
         this.userId = userData;
@@ -46,5 +46,6 @@ public class OrderData {
         this.cancle = isCancle();
         this.orderDate = getOrderDate();
         this.quantity = quantity;
+        this.totalPrice = totalPrice;
     }
 }

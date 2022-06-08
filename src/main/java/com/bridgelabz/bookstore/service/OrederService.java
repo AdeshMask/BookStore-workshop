@@ -52,7 +52,7 @@ public class OrederService implements IOrderService{
                         + bookIdList.get(i) + " is " + iBookService.getBookById(bookIdList.get(i)).getBookQuantity() + ".");
         }
         List<String> nameList = bookList.stream().map(BookModule::getBookName).toList();
-        OrderData order = new OrderData(userData, orderDTO.getBookId(), orderDTO.address, orderDTO.getQuantity());
+        OrderData order = new OrderData(userData, orderDTO.getBookId(), orderDTO.address, orderDTO.getQuantity(),totalPrice);
 
         emailService.sendEmail(userData.getEmailId(), "Order Created Successfully on ", "Order placed on" + " for books" + nameList + ". Total price is " + totalPrice);
         return orderRepo.save(order);

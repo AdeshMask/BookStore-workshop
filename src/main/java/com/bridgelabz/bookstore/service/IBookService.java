@@ -8,7 +8,7 @@ import java.util.List;
 public interface IBookService {
     Object addBook(BookDTO bookDTO , String token);
 
-    public BookModule getBookById(int bookId);
+    public BookModule getBookById(Integer bookId);
 
     Object searchAll();
 

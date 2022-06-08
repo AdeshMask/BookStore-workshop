@@ -25,7 +25,7 @@ public class BookService implements IBookService{
     public Object addBook(BookDTO bookDTO,String token) {
         UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
         BookModule bookModule = new BookModule(bookDTO);
-        if (userRegistrationModule != null) {
+        if (userRegistrationModule.isAdmin()) {
             emailService.sendEmail(userRegistrationModule.getEmailId(), "Book Created successfully!!",
                     "User " + userRegistrationModule.getFullName() + " has added new book successfully " + bookModule + ".");
             return bookRepo.save(bookModule);
@@ -33,7 +33,7 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public BookModule getBookById(int bookId){
+    public BookModule getBookById(Integer bookId){
         return bookRepo.findById(bookId).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + bookId + " does not exist in database..!"));
 
     }
@@ -46,7 +46,7 @@ public class BookService implements IBookService{
     @Override
     public Object update(Integer id, BookDTO bookDTO, String token) {
         UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
-        if (bookRepo.findById(id).isPresent() && userRegistrationModule != null) {
+        if (bookRepo.findById(id).isPresent() && userRegistrationModule.isAdmin()) {
             BookModule newBookModule = new BookModule(id, bookDTO);
             BookModule search = bookRepo.save(newBookModule);
             emailService.sendEmail(userRegistrationModule.getEmailId(), "Book updated successfully!!",
@@ -61,7 +61,7 @@ public class BookService implements IBookService{
     public Object removeById(Integer id, String token) {
         UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
         Optional<BookModule> newBookModule = bookRepo.findById(id);
-        if (newBookModule.isPresent() && userRegistrationModule != null){
+        if (newBookModule.isPresent() && userRegistrationModule.isAdmin()){
             bookRepo.delete(newBookModule.get());
             return "Record is deleted with id ";
         }

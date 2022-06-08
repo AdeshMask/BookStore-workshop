@@ -1,8 +1,6 @@
 package com.bridgelabz.bookstore.module;
 
 import com.bridgelabz.bookstore.dto.BookDTO;
-import com.bridgelabz.bookstore.dto.CartDTO;
-import com.bridgelabz.bookstore.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +46,4 @@ public class BookModule {
         this.bookQuantity = bookDTO.bookQuantity;
     }
 
-    public BookModule(CartDTO cartDTO) {
-    }
 }

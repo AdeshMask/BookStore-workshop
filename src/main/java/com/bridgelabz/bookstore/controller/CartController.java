@@ -11,38 +11,25 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/cart")
 public class CartController {
+
     @Autowired
     ICartService iCartService;
 
     @PostMapping("/add")
-    public ResponseEntity<RespnseDTO> addCart(@RequestBody CartDTO cartDTO,@RequestParam String token) {
-        RespnseDTO responseDTO = new RespnseDTO("Cart Item add Successfull", iCartService.addCart(cartDTO,token));
+    public ResponseEntity<RespnseDTO> addToCart(@RequestBody CartDTO cartDTO, @RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iCartService.addToCart(cartDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
-    //----------------------------------------get-by-Id---------------------------
-    @GetMapping("/get/{token}")
-    public ResponseEntity<RespnseDTO> getAddressById(@RequestParam String token) {
-        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iCartService.getCartById(token));
-        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.CREATED);
-    }
 
-    //----------------------------------------Get-all------------------------------
     @GetMapping("/get-all")
-    public ResponseEntity<RespnseDTO> getAllCartItems(){
-        RespnseDTO responseDTO = new RespnseDTO("Showing all the records..", iCartService.getAllCartItems());
-        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+    public ResponseEntity<RespnseDTO> getAll(String token){
+        RespnseDTO respnseDTO = new RespnseDTO("Here are all the Cart Items..." , iCartService.getCartItems(token));
+        return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.OK);
     }
 
-    //-----------------------------------------Update-------------------------------
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<RespnseDTO> editData(@PathVariable Integer id,@RequestBody  int quantity,@RequestParam String token) {
-        RespnseDTO responseDTO = new RespnseDTO("Successfully updated",iCartService.update(id,quantity,token));
-        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id,String token){
-        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successfull", iCartService.removeById(id,token));
-        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+    @GetMapping("/remove")
+    public ResponseEntity<RespnseDTO> removeFromCart(@RequestParam String token, @PathVariable int id){
+        RespnseDTO respnseDTO = new RespnseDTO("Here are all the Cart Items..." , iCartService.removeById(id,token));
+        return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.OK);
     }
 }
