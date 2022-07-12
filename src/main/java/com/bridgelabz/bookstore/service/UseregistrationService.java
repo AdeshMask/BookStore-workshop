@@ -7,12 +7,13 @@ import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
 import com.bridgelabz.bookstore.util.TokenUtility;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
+@Slf4j
 @Service
 public class UseregistrationService implements IUserRegistration{
 
@@ -26,13 +27,15 @@ public class UseregistrationService implements IUserRegistration{
 
 
     @Override
-    public Object addPerson(UserRegistrationModule newUserRegistartionModule) {
-        UserRegistrationModule userRegistrationModule = new UserRegistrationModule(newUserRegistartionModule);
-        iUsrRegistrationRepo.save(userRegistrationModule);
-        String token=tokenUtility.createToken(userRegistrationModule.getId());
-        emailService.sendEmail(userRegistrationModule.getEmailId(), "Token",
-                "Registeration SuccessFull and generated token is--> "+token);
-        return token;
+    public Object addPerson(UserDTO userDTO) {
+        UserRegistrationModule user = new UserRegistrationModule(userDTO);
+        iUsrRegistrationRepo.save(user);
+        String token=tokenUtility.createToken(user.getId());
+        user.setToken(token);
+        iUsrRegistrationRepo.save(user);
+        emailService.sendEmail(user.getEmailId(), "Token",
+                "--> "+token);
+        return user;
     }
 
     @Override
@@ -46,10 +49,11 @@ public class UseregistrationService implements IUserRegistration{
     }
 
     @Override
-    public String userLogin(LoginDTO loginDTO) {
+    public Optional<UserRegistrationModule> userLogin(LoginDTO loginDTO) {
         Optional<UserRegistrationModule> newUserRegistration = iUsrRegistrationRepo.findByEmailIdAndPassword(loginDTO.emailId, loginDTO.password);
         if (newUserRegistration.isPresent()) {
-            return "LOGIN SUCCESSFUL";
+             log.info("LOGIN SUCCESSFUL");
+             return newUserRegistration;
         } else {
             System.out.println("User not Found Exception:");
             throw (new BookStoreExceptionHandler("Record not Found"));
@@ -64,6 +68,12 @@ public class UseregistrationService implements IUserRegistration{
     @Override
     public UserRegistrationModule getUserById(String token) {
         int id=tokenUtility.decodeToken(token);
+        return iUsrRegistrationRepo.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("User  with id " + id + " does not exist in database..!"));
+
+    }
+
+    @Override
+    public UserRegistrationModule getUserId(int id) {
         return iUsrRegistrationRepo.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("User  with id " + id + " does not exist in database..!"));
 
     }

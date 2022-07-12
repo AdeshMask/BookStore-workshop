@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -27,7 +27,7 @@ public class CartController {
         return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.OK);
     }
 
-    @GetMapping("/remove")
+    @DeleteMapping("/remove/{id}")
     public ResponseEntity<RespnseDTO> removeFromCart(@RequestParam String token, @PathVariable int id){
         RespnseDTO respnseDTO = new RespnseDTO("Here are all the Cart Items..." , iCartService.removeById(id,token));
         return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.OK);

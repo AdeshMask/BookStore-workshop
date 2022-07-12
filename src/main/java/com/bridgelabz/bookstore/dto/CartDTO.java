@@ -10,15 +10,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class CartDTO {
-    @ElementCollection
-    @CollectionTable
-    public List<Integer> bookId;
 
-    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    public UserRegistrationModule userId;
+    public int bookId;
 
-    @ElementCollection
-    public List<Integer> quantity;
+    public int userId;
+    public int quantity;
 }

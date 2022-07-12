@@ -17,4 +17,5 @@ public class BookDTO {
     @ElementCollection
     public BookModule bookModule;
     public int bookQuantity;
+    public String profilePic;
 }

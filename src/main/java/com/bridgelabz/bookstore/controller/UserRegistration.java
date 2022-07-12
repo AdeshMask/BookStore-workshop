@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RestController
 @RequestMapping(("/user"))
 public class UserRegistration {
@@ -28,8 +29,7 @@ public class UserRegistration {
     /*--------------------Post Operation-------------------*/
     @PostMapping("/add")
     public ResponseEntity<RespnseDTO> addperson(@RequestBody UserDTO userDTO){
-        UserRegistrationModule newUserRegistrationModule = new UserRegistrationModule(userDTO);
-        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iUserRegistration.addPerson(newUserRegistrationModule));
+        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iUserRegistration.addPerson(userDTO));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
     //-----------------------------------------Update-------------------------------
@@ -55,11 +55,11 @@ public class UserRegistration {
     }
 
     @PostMapping("/userlogin")
-    public String userLogin(@RequestBody LoginDTO loginDTO) {
-        String login = iUserRegistration.userLogin(loginDTO);
+    public ResponseEntity<RespnseDTO> userLogin(@RequestBody LoginDTO loginDTO) {
+        Optional<UserRegistrationModule> login = iUserRegistration.userLogin(loginDTO);
         if (login != null) {
             RespnseDTO respnseDTO = new RespnseDTO("LOGIN SUCCESSFUL", login);
-            return "LOGIN SUCCESSFUL";
+            return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.ACCEPTED);
         } else {
             RespnseDTO respnseDTO = new RespnseDTO("User login not successfully", login);
             throw (new BookStoreExceptionHandler("Record not Found"));

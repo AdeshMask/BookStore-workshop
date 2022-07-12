@@ -13,5 +13,7 @@ public class UserDTO {
     public String userName;
     public String password;
     public String emailId;
-    public boolean isAdmin = false;
+
+    public String token;
+
 }

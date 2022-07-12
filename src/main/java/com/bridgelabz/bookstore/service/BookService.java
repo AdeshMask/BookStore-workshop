@@ -25,7 +25,7 @@ public class BookService implements IBookService{
     public Object addBook(BookDTO bookDTO,String token) {
         UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
         BookModule bookModule = new BookModule(bookDTO);
-        if (userRegistrationModule.isAdmin()) {
+        if (userRegistrationModule != null) {
             emailService.sendEmail(userRegistrationModule.getEmailId(), "Book Created successfully!!",
                     "User " + userRegistrationModule.getFullName() + " has added new book successfully " + bookModule + ".");
             return bookRepo.save(bookModule);
@@ -46,7 +46,7 @@ public class BookService implements IBookService{
     @Override
     public Object update(Integer id, BookDTO bookDTO, String token) {
         UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
-        if (bookRepo.findById(id).isPresent() && userRegistrationModule.isAdmin()) {
+        if (bookRepo.findById(id).isPresent() && userRegistrationModule != null) {
             BookModule newBookModule = new BookModule(id, bookDTO);
             BookModule search = bookRepo.save(newBookModule);
             emailService.sendEmail(userRegistrationModule.getEmailId(), "Book updated successfully!!",
@@ -61,7 +61,7 @@ public class BookService implements IBookService{
     public Object removeById(Integer id, String token) {
         UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
         Optional<BookModule> newBookModule = bookRepo.findById(id);
-        if (newBookModule.isPresent() && userRegistrationModule.isAdmin()){
+        if (newBookModule.isPresent() && userRegistrationModule != null){
             bookRepo.delete(newBookModule.get());
             return "Record is deleted with id ";
         }
@@ -93,5 +93,15 @@ public class BookService implements IBookService{
             book.setBookQuantity(quantity);
             return bookRepo.save(book);
         } else throw new BookStoreExceptionHandler("No book found with the given id or you are not an admin user.");
+    }
+
+    @Override
+    public Object getByLowerPrice() {
+        return bookRepo.getByLowerPrice();
+    }
+
+    @Override
+    public Object getByHigherPrice() {
+        return bookRepo.getByHigherPrice();
     }
 }

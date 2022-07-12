@@ -12,4 +12,5 @@ public interface IUsrRegistrationRepo extends JpaRepository<UserRegistrationModu
     Optional<UserRegistrationModule> getUserById( UserRegistrationModule userId);
 
     Optional<UserRegistrationModule> findByEmailIdAndPassword(String email_Id, String password);
+
 }

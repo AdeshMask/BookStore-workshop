@@ -23,4 +23,8 @@ public interface IBookService {
     Object sortAscByBookPrice();
 
     public BookModule updateQuantityById(int id, int quantity, String token);
+
+    Object getByLowerPrice();
+
+    Object getByHigherPrice();
 }

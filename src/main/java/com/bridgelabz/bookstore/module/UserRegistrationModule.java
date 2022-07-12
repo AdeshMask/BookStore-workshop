@@ -1,9 +1,11 @@
 package com.bridgelabz.bookstore.module;
 
 import com.bridgelabz.bookstore.dto.UserDTO;
+import com.bridgelabz.bookstore.util.TokenUtility;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
@@ -12,16 +14,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRegistrationModule {
+
+
     @Id
-    @Column(name = "userID")
+    @Column(name = "userId")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    public int id;
     String fullName;
     String mobileNumber;
     String userName;
     String password;
     String emailId;
-    boolean isAdmin = false;
+    String token;
 
     public UserRegistrationModule(UserDTO userDTO) {
         this.id = id;
@@ -30,7 +34,7 @@ public class UserRegistrationModule {
         this.userName = userDTO.userName;
         this.password = userDTO.password;
         this.emailId = userDTO.emailId;
-        this.isAdmin = isAdmin();
+        this.token = userDTO.getToken();
     }
 
     public UserRegistrationModule(UserRegistrationModule newUserRegistartionModule) {
@@ -40,7 +44,7 @@ public class UserRegistrationModule {
         this.userName = newUserRegistartionModule.userName;
         this.password = newUserRegistartionModule.password;
         this.emailId = newUserRegistartionModule.emailId;
-        this.isAdmin = isAdmin();
+        this.token = newUserRegistartionModule.token;
     }
 
     public UserRegistrationModule(Integer id, UserDTO userDTO) {
@@ -50,6 +54,6 @@ public class UserRegistrationModule {
         this.userName = userDTO.userName;
         this.password = userDTO.password;
         this.emailId = userDTO.emailId;
-        this.isAdmin = isAdmin();
+        this.token = userDTO.token;
     }
 }

@@ -21,31 +21,39 @@ public class OrderData {
     @GeneratedValue
     public int orderId;
 
-    @ElementCollection
-    @CollectionTable
-    public List<Integer> bookId;
+    @ManyToOne
+    @JoinColumn(name = "cartId")
+    public Cart cartId;
+
+    @ManyToOne
+    @JoinColumn(name = "custId")
+    public CustomerDetails custId;
 
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     public UserRegistrationModule userId;
 
-    public String address;
-
-    @ElementCollection
-    public List<Integer> quantity;
     boolean cancle = true;
     public LocalDate orderDate= LocalDate.now();
-    float totalPrice;
 
-    public OrderData(UserRegistrationModule userData, List<Integer> bookId, String address, List<Integer> quantity,float totalPrice) {
-        this.orderId = getOrderId();
-        this.bookId = bookId;
-        this.userId = userData;
-        this.address = address;
-        this.cancle = isCancle();
-        this.orderDate = getOrderDate();
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
+    public OrderData(UserRegistrationModule userId, Cart cartId, Object custId) {
+        this.orderId=getOrderId();
+        this.userId=userId;
+        this.custId=getCustId();
+        this.cartId=getCartId();
+
     }
+
+
+//    public OrderData(UserRegistrationModule userData, BookModule bookId, String address, int quantity,float totalPrice) {
+//        this.orderId = getOrderId();
+//        this.ca = bookId;
+//        this.userId = userData;
+//        this.address = address;
+//        this.cancle = isCancle();
+//        this.orderDate = getOrderDate();
+//        this.quantity = quantity;
+//        this.totalPrice = totalPrice;
+//    }
 }

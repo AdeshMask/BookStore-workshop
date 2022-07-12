@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -44,6 +44,20 @@ public class BookController {
     @GetMapping("/get-all")
     public ResponseEntity<RespnseDTO> getAllBooks(){
         RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iBookService.searchAll());
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+    }
+
+    //----------------------------------------Get-all------------------------------
+    @GetMapping("/get-low")
+    public ResponseEntity<RespnseDTO> getByLowerPrice(){
+        RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iBookService.getByLowerPrice());
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+    }
+
+    //----------------------------------------Get-all------------------------------
+    @GetMapping("/get-high")
+    public ResponseEntity<RespnseDTO> getByHigherPrice(){
+        RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iBookService.getByHigherPrice());
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
     //-----------------------------------------Update-------------------------------

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -17,8 +18,8 @@ public class OrderController {
 
     //----------------------------------------Place The Order---------------------------
     @PostMapping("/add")
-    public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO,@RequestParam String token){
-        RespnseDTO responseDTO = new RespnseDTO("Order Place Successful", iOrderService.placeOrder(orderDTO,token));
+    public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO,@RequestParam String token,@PathVariable int id){
+        RespnseDTO responseDTO = new RespnseDTO("Order Place Successful", iOrderService.placeOrder(orderDTO,token,id));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
 

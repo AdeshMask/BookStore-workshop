@@ -22,12 +22,15 @@ public class BookModule {
     public String authorName;
     public int bookQuantity;
 
+    public String profilePic;
+
     public BookModule(BookDTO bookDTO) {
         this.bookId=bookId;
         this.bookName = bookDTO.bookName;
         this.price = bookDTO.price;
         this.authorName = bookDTO.authorName;
         this.bookQuantity = bookDTO.bookQuantity;
+        this.profilePic = bookDTO.profilePic;
     }
 
     public BookModule(BookModule newBookModule) {
@@ -36,6 +39,7 @@ public class BookModule {
         this.price = newBookModule.price;
         this.authorName = newBookModule.authorName;
         this.bookQuantity = newBookModule.bookQuantity;
+        this.profilePic = newBookModule.profilePic;
     }
 
     public BookModule(Integer id, BookDTO bookDTO) {
@@ -44,6 +48,7 @@ public class BookModule {
         this.price = bookDTO.price;
         this.authorName = bookDTO.authorName;
         this.bookQuantity = bookDTO.bookQuantity;
+        this.profilePic = bookDTO.profilePic;
     }
 
 }
