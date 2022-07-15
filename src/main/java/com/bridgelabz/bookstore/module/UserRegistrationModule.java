@@ -34,7 +34,7 @@ public class UserRegistrationModule {
         this.userName = userDTO.userName;
         this.password = userDTO.password;
         this.emailId = userDTO.emailId;
-        this.token = userDTO.getToken();
+//        this.token = userDTO.getToken();
     }
 
     public UserRegistrationModule(UserRegistrationModule newUserRegistartionModule) {
@@ -44,7 +44,7 @@ public class UserRegistrationModule {
         this.userName = newUserRegistartionModule.userName;
         this.password = newUserRegistartionModule.password;
         this.emailId = newUserRegistartionModule.emailId;
-        this.token = newUserRegistartionModule.token;
+//        this.token = newUserRegistartionModule.token;
     }
 
     public UserRegistrationModule(Integer id, UserDTO userDTO) {
@@ -54,6 +54,6 @@ public class UserRegistrationModule {
         this.userName = userDTO.userName;
         this.password = userDTO.password;
         this.emailId = userDTO.emailId;
-        this.token = userDTO.token;
+//        this.token = userDTO.token;
     }
 }

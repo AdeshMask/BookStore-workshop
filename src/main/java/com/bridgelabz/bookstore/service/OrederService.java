@@ -34,20 +34,19 @@ public class OrederService implements IOrderService{
     TokenUtility tokenUtility;
 
     @Override
-    public OrderData placeOrder(OrderDTO orderDTO,String token,int id) {
+    public OrderData placeOrder(OrderDTO orderDTO,String token) {
         UserRegistrationModule userData = iUserRegistration.getUserById(token);
         Cart cart = iCartService.getCartItems(token);
-        Object customerDetails = iCustomerService.getUserById(id);
-        OrderData order = new OrderData(userData, cart, customerDetails);
-        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully on ", "Order placed on" + " for books" + ". Total price is ");
+//        Object customerDetails = iCustomerService.getUserById(id);
+        OrderData order = new OrderData(userData, cart);
+//        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully on ", "Order placed on" + " for books" + ". Total price is ");
         return orderRepo.save(order);
     }
 
     @Override
     public OrderData getOrderID(String token) {
         int id=tokenUtility.decodeToken(token);
-        return orderRepo.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + id +
-                " does not exist in database..!"));
+        return orderRepo.findByIserId(id);
     }
 
     @Override

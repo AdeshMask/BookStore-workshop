@@ -18,29 +18,29 @@ public class OrderController {
 
     //----------------------------------------Place The Order---------------------------
     @PostMapping("/add")
-    public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO,@RequestParam String token,@PathVariable int id){
-        RespnseDTO responseDTO = new RespnseDTO("Order Place Successful", iOrderService.placeOrder(orderDTO,token,id));
+    public ResponseEntity<RespnseDTO> placeOrder(@RequestBody OrderDTO orderDTO,@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Order Place Successful", iOrderService.placeOrder(orderDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
 
     //----------------------------------------get-by-Id---------------------------
-    @GetMapping("/get/{id}")
+    @GetMapping("/get")
     public ResponseEntity<RespnseDTO> getOrderById(@RequestParam String token) {
         RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iOrderService.getOrderID(token));
-        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.CREATED);
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.ACCEPTED);
     }
 
     //----------------------------------------Get-all------------------------------
     @GetMapping("/get-all")
     public ResponseEntity<RespnseDTO> getAllOrders(){
         RespnseDTO responseDTO = new RespnseDTO("Getting all the record..", iOrderService.getAllOrders());
-        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.ACCEPTED);
     }
 
     //----------------------------------------Cancel The Order---------------------------
     @PutMapping("/cancle/{id}")
     public ResponseEntity<RespnseDTO> cancelOrder(@PathVariable String token){
         RespnseDTO responseDTO = new RespnseDTO("Order Canceled", iOrderService.cancelOrder(token));
-        return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
+        return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.OK);
     }
 }

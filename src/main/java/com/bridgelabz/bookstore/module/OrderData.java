@@ -45,6 +45,11 @@ public class OrderData {
 
     }
 
+    public OrderData(UserRegistrationModule userData, Cart cart) {
+        this.userId=userData;
+        this.cartId=cart;
+    }
+
 
 //    public OrderData(UserRegistrationModule userData, BookModule bookId, String address, int quantity,float totalPrice) {
 //        this.orderId = getOrderId();
