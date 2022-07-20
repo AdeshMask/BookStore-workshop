@@ -8,10 +8,11 @@ import com.bridgelabz.bookstore.module.Cart;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.BookRepo;
 import com.bridgelabz.bookstore.reository.CartRepo;
+import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
 import com.bridgelabz.bookstore.util.TokenUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,32 +30,23 @@ public class CartServices implements ICartService{
     CartRepo cartRepo;
     @Autowired
     BookRepo bookRepo;
-
+    @Autowired
+    IUsrRegistrationRepo userRepositoration;
     @Autowired
     TokenUtility tokenUtility;
     @Override
-    public Cart addToCart(CartDTO cartDTO, String token) {
-        UserRegistrationModule userData = iUserRegistration.getUserById(token);
-        BookModule bookData = iBookService.getBookById(cartDTO.bookId);
-        int bookQuantity = cartDTO.quantity;
-        long totalprice = bookQuantity * bookData.getPrice();
-        int cartId = 0;
-        Cart cart = new Cart();
-        if (cartRepo.findById(cartDTO.userId).isPresent()){
-            bookQuantity = bookQuantity+1;
-            cartId= cartRepo.findCartsByUserId(cartDTO.userId).getCartId();
-            cart = new Cart(cartId,userData, bookData,bookQuantity,totalprice);
-
-        }else {
-            cart = new Cart(userData, bookData,bookQuantity,totalprice);
-        }
+    public Object addToCart(CartDTO cartDTO, String token) {
+        int id = tokenUtility.decodeToken(token);
+        Optional<UserRegistrationModule>  userData = userRepositoration.findById(id);
+        Optional<BookModule> bookData = iBookService.getBookById(cartDTO.getBookId());
+        long totalPrice = cartDTO.getQuantity() * bookData.get().getPrice();
+        Cart cart = new Cart(userData.get(),bookData.get(),cartDTO.getQuantity(),totalPrice);
         return cartRepo.save(cart);
     }
 
-    public Cart getCartItems(String token) {
+    public List<Cart> getCartItems(String token) {
         int id=tokenUtility.decodeToken(token);
-        return cartRepo.findCartsByUserId(id);
-//        return cartRepo.findCartsByUserId(id);
+        return  cartRepo.findCartsByUserId(id);
     }
 
     public Object removeById(Integer id, String token) {
@@ -66,5 +58,7 @@ public class CartServices implements ICartService{
         }
         throw (new BookStoreExceptionHandler("Record not Found"));
     }
+
+
 
 }

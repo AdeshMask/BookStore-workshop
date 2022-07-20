@@ -23,7 +23,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Object getUserById(int id) {
+    public CustomerDetails getUserById(int id) {
         return customerRepository.findById(id).orElseThrow(() -> new BookStoreExceptionHandler("Customer with id " + id + " does not exist in database..!"));
 
     }

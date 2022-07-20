@@ -33,9 +33,8 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public BookModule getBookById(Integer bookId){
-        return bookRepo.findById(bookId).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + bookId + " does not exist in database..!"));
-
+    public Optional<BookModule> getBookById(int bookId){
+        return bookRepo.findById(bookId);
     }
 
     @Override
@@ -89,9 +88,9 @@ public class BookService implements IBookService{
     public BookModule updateQuantityById(int id, int quantity, String token) throws BookStoreExceptionHandler {
         UserRegistrationModule userData = iUserRegistration.getUserById((token));
         if (bookRepo.findById(id).isPresent() && userData != null) {
-            BookModule book = this.getBookById(id);
-            book.setBookQuantity(quantity);
-            return bookRepo.save(book);
+            Optional<BookModule> book = this.getBookById(id);
+            book.get().setBookQuantity(quantity);
+            return null;
         } else throw new BookStoreExceptionHandler("No book found with the given id or you are not an admin user.");
     }
 
@@ -99,7 +98,6 @@ public class BookService implements IBookService{
     public Object getByLowerPrice() {
         return bookRepo.getByLowerPrice();
     }
-
     @Override
     public Object getByHigherPrice() {
         return bookRepo.getByHigherPrice();

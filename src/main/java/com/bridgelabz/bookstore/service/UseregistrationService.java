@@ -50,7 +50,8 @@ public class UseregistrationService implements IUserRegistration{
 
     @Override
     public Optional<UserRegistrationModule> userLogin(LoginDTO loginDTO) {
-        Optional<UserRegistrationModule> newUserRegistration = iUsrRegistrationRepo.findByEmailIdAndPassword(loginDTO.emailId, loginDTO.password);
+        Optional<UserRegistrationModule> newUserRegistration =
+                iUsrRegistrationRepo.findByEmailIdAndPassword(loginDTO.emailId, loginDTO.password);
         if (newUserRegistration.isPresent()) {
              log.info("LOGIN SUCCESSFUL");
              return newUserRegistration;

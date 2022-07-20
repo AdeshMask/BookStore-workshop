@@ -2,9 +2,9 @@ package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.dto.WishListDTO;
 import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
-import com.bridgelabz.bookstore.module.BookModule;
-import com.bridgelabz.bookstore.module.OrderData;
-import com.bridgelabz.bookstore.module.UserRegistrationModule;
+//import com.bridgelabz.bookstore.module.BookModule;
+//import com.bridgelabz.bookstore.module.OrderData;
+//import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.module.WishList;
 import com.bridgelabz.bookstore.reository.BookRepo;
 import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
@@ -32,10 +32,10 @@ public class WishListService implements IWishList {
     TokenUtility tokenUtility;
     @Override
     public WishList addItem(WishListDTO wishListDTO) {
-        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(tokenUtility.createToken(wishListDTO.userId));
-        BookModule bookService = iBookService.getBookById(wishListDTO.getBookId());
-        WishList wishList = new WishList(userRegistrationModule, bookService);
-        return wishListRepo.save(wishList);
+//        Optional<BookModule> userRegistrationModule = iUsrRegistrationRepo.getUserById(wishListDTO.userId);
+//        Optional<BookModule> bookService = iBookService.getBookById(wishListDTO.getBookId());
+//        WishList wishList = new WishList(userRegistrationModule.get(), bookService.get());
+        return null;
 
     }
 

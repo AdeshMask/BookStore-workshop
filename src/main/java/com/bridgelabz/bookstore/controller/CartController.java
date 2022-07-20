@@ -22,7 +22,7 @@ public class CartController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<RespnseDTO> getAll(String token){
+    public ResponseEntity<RespnseDTO> getAll(@RequestParam String token){
         RespnseDTO respnseDTO = new RespnseDTO("Here are all the Cart Items..." , iCartService.getCartItems(token));
         return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.OK);
     }
@@ -32,4 +32,5 @@ public class CartController {
         RespnseDTO respnseDTO = new RespnseDTO("Here are all the Cart Items..." , iCartService.removeById(id,token));
         return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.OK);
     }
+
 }

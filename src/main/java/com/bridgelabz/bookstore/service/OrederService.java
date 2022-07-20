@@ -2,8 +2,8 @@ package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.dto.OrderDTO;
 import com.bridgelabz.bookstore.email.EmailService;
-import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
 import com.bridgelabz.bookstore.module.Cart;
+import com.bridgelabz.bookstore.module.CustomerDetails;
 import com.bridgelabz.bookstore.module.OrderData;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
@@ -36,10 +36,10 @@ public class OrederService implements IOrderService{
     @Override
     public OrderData placeOrder(OrderDTO orderDTO,String token) {
         UserRegistrationModule userData = iUserRegistration.getUserById(token);
-        Cart cart = iCartService.getCartItems(token);
-//        Object customerDetails = iCustomerService.getUserById(id);
-        OrderData order = new OrderData(userData, cart);
-//        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully on ", "Order placed on" + " for books" + ". Total price is ");
+        List<Cart> cart = iCartService.getCartItems(token);
+        CustomerDetails customerDetails = iCustomerService.getUserById(orderDTO.getCustId());
+        OrderData order = new OrderData(userData, cart,customerDetails);
+        emailService.sendEmail(userData.getEmailId(), "Order Created Successfully on ", "Order placed on" + " for books" + ". Total price is ");
         return orderRepo.save(order);
     }
 
@@ -57,7 +57,7 @@ public class OrederService implements IOrderService{
     @Override
     public OrderData cancelOrder(String token) {
         OrderData order = getOrderID(token);
-        order.setCancle(false);
+        order.setCancel(false);
         return order;
     }
 }

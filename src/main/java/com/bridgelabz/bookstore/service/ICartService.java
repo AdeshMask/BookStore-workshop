@@ -5,7 +5,8 @@ import com.bridgelabz.bookstore.module.Cart;
 import java.util.List;
 
 public interface ICartService {
-    Cart addToCart(CartDTO cartDTO, String token);
-    Cart getCartItems(String token);
+    Object addToCart(CartDTO cartDTO, String token);
+    List<Cart> getCartItems(String token);
     Object removeById(Integer id, String token);
+
 }

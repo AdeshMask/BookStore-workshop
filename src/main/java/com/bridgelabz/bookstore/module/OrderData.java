@@ -1,7 +1,6 @@
 package com.bridgelabz.bookstore.module;
 
 
-import com.bridgelabz.bookstore.dto.OrderDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,44 +20,26 @@ public class OrderData {
     @GeneratedValue
     public int orderId;
 
-    @ManyToOne
-    @JoinColumn(name = "cartId")
-    public Cart cartId;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "custId")
     public CustomerDetails custId;
 
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Cart> cart;
+
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    public UserRegistrationModule userId;
+    public UserRegistrationModule user;
 
-    boolean cancle = true;
+    boolean cancel = true;
     public LocalDate orderDate= LocalDate.now();
 
-    public OrderData(UserRegistrationModule userId, Cart cartId, Object custId) {
-        this.orderId=getOrderId();
-        this.userId=userId;
-        this.custId=getCustId();
-        this.cartId=getCartId();
 
+    public OrderData(UserRegistrationModule userData, List<Cart> cart, CustomerDetails customerDetails) {
+        this.user = userData;
+        this.cart = cart;
+        this.custId = customerDetails;
     }
-
-    public OrderData(UserRegistrationModule userData, Cart cart) {
-        this.userId=userData;
-        this.cartId=cart;
-    }
-
-
-//    public OrderData(UserRegistrationModule userData, BookModule bookId, String address, int quantity,float totalPrice) {
-//        this.orderId = getOrderId();
-//        this.ca = bookId;
-//        this.userId = userData;
-//        this.address = address;
-//        this.cancle = isCancle();
-//        this.orderDate = getOrderDate();
-//        this.quantity = quantity;
-//        this.totalPrice = totalPrice;
-//    }
 }

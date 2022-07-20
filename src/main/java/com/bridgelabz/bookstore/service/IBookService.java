@@ -4,11 +4,12 @@ import com.bridgelabz.bookstore.dto.BookDTO;
 import com.bridgelabz.bookstore.module.BookModule;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IBookService {
     Object addBook(BookDTO bookDTO , String token);
 
-    public BookModule getBookById(Integer bookId);
+    Optional<BookModule> getBookById(int bookId);
 
     Object searchAll();
 
