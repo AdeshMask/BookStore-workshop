@@ -6,6 +6,5 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class WishListDTO {
-    public int userId;
     public int bookId;
 }

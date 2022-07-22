@@ -38,7 +38,7 @@ public class OrderController {
     }
 
     //----------------------------------------Cancel The Order---------------------------
-    @PutMapping("/cancle/{id}")
+    @DeleteMapping("/cancle/{token}")
     public ResponseEntity<RespnseDTO> cancelOrder(@PathVariable String token){
         RespnseDTO responseDTO = new RespnseDTO("Order Canceled", iOrderService.cancelOrder(token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.OK);

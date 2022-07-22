@@ -5,6 +5,8 @@ import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
 //import com.bridgelabz.bookstore.module.BookModule;
 //import com.bridgelabz.bookstore.module.OrderData;
 //import com.bridgelabz.bookstore.module.UserRegistrationModule;
+import com.bridgelabz.bookstore.module.BookModule;
+import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.module.WishList;
 import com.bridgelabz.bookstore.reository.BookRepo;
 import com.bridgelabz.bookstore.reository.IUsrRegistrationRepo;
@@ -31,11 +33,12 @@ public class WishListService implements IWishList {
     @Autowired
     TokenUtility tokenUtility;
     @Override
-    public WishList addItem(WishListDTO wishListDTO) {
-//        Optional<BookModule> userRegistrationModule = iUsrRegistrationRepo.getUserById(wishListDTO.userId);
-//        Optional<BookModule> bookService = iBookService.getBookById(wishListDTO.getBookId());
-//        WishList wishList = new WishList(userRegistrationModule.get(), bookService.get());
-        return null;
+    public WishList addItem(WishListDTO wishListDTO, String token) {
+        int id = tokenUtility.decodeToken(token);
+        UserRegistrationModule userRegistrationModule = iUserRegistration.getUserId(id);
+        Optional<BookModule> bookService = iBookService.getBookById(wishListDTO.getBookId());
+        WishList wishList = new WishList(userRegistrationModule, bookService.get());
+        return wishListRepo.save(wishList);
 
     }
 
@@ -55,8 +58,10 @@ public class WishListService implements IWishList {
     }
 
     @Override
-    public WishList getItemById(int wId) {
-        return wishListRepo.findById(wId).orElseThrow(() -> new BookStoreExceptionHandler("Book  with id " + wId + " does not exist in database..!"));
+    public List<WishList> getItemById(String token) {
+        int userId  = tokenUtility.decodeToken(token);
+        List<WishList> wishList = wishListRepo.findWishlistById(userId);
+        return wishList;
     }
 
     @Override

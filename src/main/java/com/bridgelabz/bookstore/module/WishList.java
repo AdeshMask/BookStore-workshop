@@ -33,11 +33,11 @@ public class WishList {
 
     public WishList(WishListDTO wishListDTO) {
         this.bookId = wishListDTO.getBookId();
-        this.userId = wishListDTO.getUserId();
+//        this.userId = wishListDTO.getUserId();
     }
 
     public WishList(Integer id, WishListDTO wishListDTO) {
         this.bookId = id;
-        this.userId = wishListDTO.getUserId();
+//        this.userId = wishListDTO.getUserId();
     }
 }

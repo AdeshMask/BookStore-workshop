@@ -9,4 +9,5 @@ public interface ICartService {
     List<Cart> getCartItems(String token);
     Object removeById(Integer id, String token);
 
+    Object emptyCart();
 }

@@ -58,7 +58,9 @@ public class CartServices implements ICartService{
         }
         throw (new BookStoreExceptionHandler("Record not Found"));
     }
-
-
-
+    @Override
+    public String emptyCart() {
+        cartRepo.deleteAll();
+        return "All Cart Item Deleted";
+    }
 }

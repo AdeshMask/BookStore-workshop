@@ -19,15 +19,15 @@ public class WishListController {
 
     /*--------------------Post Operation-------------------*/
     @PostMapping("/add")
-    public ResponseEntity<RespnseDTO> addBook(@RequestBody WishListDTO wishListDTO){
-        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iWishList.addItem(wishListDTO));
+    public ResponseEntity<RespnseDTO> addBook(@RequestBody WishListDTO wishListDTO,@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Add record  Success", iWishList.addItem(wishListDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO, HttpStatus.CREATED);
     }
 
     //----------------------------------------get-by-Id---------------------------
-    @GetMapping("/get/{id}")
-    public ResponseEntity<RespnseDTO> getOrderById(@PathVariable Integer id) {
-        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iWishList.getItemById(id));
+    @GetMapping("/get")
+    public ResponseEntity<RespnseDTO> getWishList(@RequestParam String token) {
+        RespnseDTO responseDTO = new RespnseDTO("Record found successfully", iWishList.getItemById(token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.CREATED);
     }
 

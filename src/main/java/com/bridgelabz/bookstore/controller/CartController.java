@@ -33,4 +33,9 @@ public class CartController {
         return new ResponseEntity<RespnseDTO>(respnseDTO,HttpStatus.OK);
     }
 
+    @DeleteMapping("/empty")
+    public ResponseEntity<RespnseDTO> emptyCart(){
+        RespnseDTO responseDTO = new RespnseDTO("Deleting all the cart Itmens",iCartService.emptyCart());
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.ACCEPTED);
+    }
 }

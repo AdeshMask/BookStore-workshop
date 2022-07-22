@@ -41,5 +41,6 @@ public class OrderData {
         this.user = userData;
         this.cart = cart;
         this.custId = customerDetails;
+        this.orderDate = LocalDate.now();
     }
 }
