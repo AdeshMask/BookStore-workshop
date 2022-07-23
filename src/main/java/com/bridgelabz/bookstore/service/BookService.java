@@ -85,12 +85,12 @@ public class BookService implements IBookService{
         return bookRepo.sortAscByBookPrice();
     }
 
-    public BookModule updateQuantityById(int id, int quantity, String token) throws BookStoreExceptionHandler {
+    public BookModule updateQuantityById(int id, BookDTO bookDTO, String token) throws BookStoreExceptionHandler {
         UserRegistrationModule userData = iUserRegistration.getUserById((token));
         if (bookRepo.findById(id).isPresent() && userData != null) {
-            Optional<BookModule> book = this.getBookById(id);
-            book.get().setBookQuantity(quantity);
-            return null;
+            BookModule book = bookRepo.findById(id).get();
+            book.setBookQuantity(bookDTO.bookQuantity);
+            return bookRepo.save(book);
         } else throw new BookStoreExceptionHandler("No book found with the given id or you are not an admin user.");
     }
 

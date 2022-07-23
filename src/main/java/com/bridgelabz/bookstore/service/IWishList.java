@@ -8,10 +8,10 @@ import java.util.List;
 public interface IWishList {
     WishList addItem(WishListDTO wishListDTO, String token);
 
-    String update(Integer id, WishListDTO wishListDTO);
+//    String update(Integer id, WishListDTO wishListDTO);
 
     List<WishList> searchAll();
 
     List<WishList> getItemById(String token);
-    String removeById(Integer id);
+    String removeById(Integer id, String token);
 }

@@ -58,9 +58,21 @@ public class CartServices implements ICartService{
         }
         throw (new BookStoreExceptionHandler("Record not Found"));
     }
+
     @Override
     public String emptyCart() {
         cartRepo.deleteAll();
         return "All Cart Item Deleted";
+    }
+
+    @Override
+    public Object updateQuantity(String token, CartDTO cartDTO, int id) {
+        UserRegistrationModule userData = iUserRegistration.getUserById((token));
+        if (cartRepo.findById(id).isPresent() && userData != null) {
+            Cart cart = cartRepo.findById(id).get();
+            cart.setQuantity(cartDTO.quantity);
+            cart.setTotalPrice(cart.getQuantity() * cart.getBook().getPrice());
+            return cartRepo.save(cart);
+        } else throw new BookStoreExceptionHandler("No book found with the given id or you are not an admin user.");
     }
 }

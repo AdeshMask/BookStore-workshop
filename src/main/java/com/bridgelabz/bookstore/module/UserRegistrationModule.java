@@ -18,7 +18,7 @@ public class UserRegistrationModule {
 
     @Id
     @Column(name = "userId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
     String fullName;
     String mobileNumber;

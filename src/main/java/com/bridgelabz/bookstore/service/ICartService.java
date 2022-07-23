@@ -10,4 +10,6 @@ public interface ICartService {
     Object removeById(Integer id, String token);
 
     Object emptyCart();
+
+    Object updateQuantity(String token, CartDTO cartDTO, int id);
 }

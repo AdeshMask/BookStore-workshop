@@ -1,13 +1,12 @@
 package com.bridgelabz.bookstore.module;
 
 import com.bridgelabz.bookstore.dto.WishListDTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -15,29 +14,18 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class WishList {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int wId;
-    public int userId;
-    public int bookId;
-
-    public WishList(WishList wishList) {
-        this.bookId = wishList.getBookId();
-        this.userId = wishList.getUserId();
-        this.wId = wishList.wId;
-    }
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    public UserRegistrationModule userId;
+    @ManyToOne
+    @JoinColumn(name = "bookId")
+    public BookModule bookId;
 
     public WishList(UserRegistrationModule userRegistrationModule, BookModule bookService) {
-        this.bookId = bookService.getBookId();
-        this.userId = userRegistrationModule.getId();
-    }
-
-    public WishList(WishListDTO wishListDTO) {
-        this.bookId = wishListDTO.getBookId();
-//        this.userId = wishListDTO.getUserId();
-    }
-
-    public WishList(Integer id, WishListDTO wishListDTO) {
-        this.bookId = id;
-//        this.userId = wishListDTO.getUserId();
+        this.bookId = bookService;
+        this.userId = userRegistrationModule;
     }
 }

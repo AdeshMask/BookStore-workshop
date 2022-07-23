@@ -2,9 +2,6 @@ package com.bridgelabz.bookstore.service;
 
 import com.bridgelabz.bookstore.dto.WishListDTO;
 import com.bridgelabz.bookstore.exceptionHandling.BookStoreExceptionHandler;
-//import com.bridgelabz.bookstore.module.BookModule;
-//import com.bridgelabz.bookstore.module.OrderData;
-//import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.module.BookModule;
 import com.bridgelabz.bookstore.module.UserRegistrationModule;
 import com.bridgelabz.bookstore.module.WishList;
@@ -42,15 +39,15 @@ public class WishListService implements IWishList {
 
     }
 
-    @Override
-    public String update(Integer id, WishListDTO wishListDTO) {
-        if (wishListRepo.findById(id).isPresent()) {
-            WishList wishList = new WishList(id, wishListDTO);
-            WishList search = wishListRepo.save(wishList);
-            return "Done " + search;
-        }
-        throw (new BookStoreExceptionHandler("Record not Found"));
-    }
+//    @Override
+//    public String update(Integer id, WishListDTO wishListDTO) {
+//        if (wishListRepo.findById(id).isPresent()) {
+//            WishList wishList = new WishList(id, wishListDTO);
+//            WishList search = wishListRepo.save(wishList);
+//            return "Done " + search;
+//        }
+//        throw (new BookStoreExceptionHandler("Record not Found"));
+//    }
 
     @Override
     public List<WishList> searchAll() {
@@ -59,17 +56,21 @@ public class WishListService implements IWishList {
 
     @Override
     public List<WishList> getItemById(String token) {
-        int userId  = tokenUtility.decodeToken(token);
+        int userId = tokenUtility.decodeToken(token);
         List<WishList> wishList = wishListRepo.findWishlistById(userId);
         return wishList;
     }
 
     @Override
-    public String removeById(Integer id) {
-        Optional<WishList> wishList = wishListRepo.findById(id);
-        if (wishList.isPresent()){
-            wishListRepo.delete(wishList.get());
-            return "Record is deleted with id ";
+    public String removeById(Integer id, String token) {
+        int userId = tokenUtility.decodeToken(token);
+        UserRegistrationModule user = iUserRegistration.getUserId(userId);
+        if (user != null) {
+            Optional<WishList> wishList = wishListRepo.findById(id);
+            if (wishList.isPresent()) {
+                wishListRepo.delete(wishList.get());
+                return "Record is deleted with id ";
+            }
         }
         throw (new BookStoreExceptionHandler("Record not Found"));
     }

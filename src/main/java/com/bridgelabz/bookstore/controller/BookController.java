@@ -85,9 +85,9 @@ public class BookController {
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
     //---------------------------------------Quantity Update---------------------------------
-    @GetMapping("/")
-    public ResponseEntity<RespnseDTO> updateQuantityById(int id, int quantity, String token){
-        RespnseDTO responseDTO = new RespnseDTO("Quantity Update Successfull", iBookService.updateQuantityById(id,quantity,token));
+    @PutMapping("/updateQuantity/{id}")
+    public ResponseEntity<RespnseDTO> updateQuantityById(@PathVariable int id, @RequestBody BookDTO bookDTO,@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Quantity Update Successful", iBookService.updateQuantityById(id,bookDTO,token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
 }

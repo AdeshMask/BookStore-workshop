@@ -38,4 +38,9 @@ public class CartController {
         RespnseDTO responseDTO = new RespnseDTO("Deleting all the cart Itmens",iCartService.emptyCart());
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.ACCEPTED);
     }
+    @PutMapping("/updateQuantity/{id}")
+    public ResponseEntity<RespnseDTO> updateQuantity(@RequestParam String token,@RequestBody CartDTO cartDTO,@PathVariable int id){
+        RespnseDTO responseDTO = new RespnseDTO("Deleting all the cart Itmens",iCartService.updateQuantity(token,cartDTO,id));
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.ACCEPTED);
+    }
 }

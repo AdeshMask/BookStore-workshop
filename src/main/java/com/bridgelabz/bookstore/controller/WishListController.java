@@ -39,14 +39,14 @@ public class WishListController {
     }
     //---------------------------------------Delete---------------------------------
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id){
-        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successful", iWishList.removeById(id));
+    public ResponseEntity<RespnseDTO> deleteAddress(@PathVariable Integer id,@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Delete Operation Successful", iWishList.removeById(id,token));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
     }
     //-----------------------------------------Update-------------------------------
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<RespnseDTO> editData(@PathVariable Integer id,@RequestBody WishListDTO wishListDTO) {
-        RespnseDTO responseDTO = new RespnseDTO("Successfully updated",iWishList.update(id,wishListDTO));
-        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
-    }
+//    @PutMapping("/edit/{id}")
+//    public ResponseEntity<RespnseDTO> editData(@PathVariable Integer id,@RequestBody WishListDTO wishListDTO) {
+//        RespnseDTO responseDTO = new RespnseDTO("Successfully updated",iWishList.update(id,wishListDTO));
+//        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.OK);
+//    }
 }

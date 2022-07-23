@@ -8,4 +8,5 @@ import lombok.RequiredArgsConstructor;
 public class CartDTO {
     public int bookId;
     public int quantity;
+    double totalPrice;
 }

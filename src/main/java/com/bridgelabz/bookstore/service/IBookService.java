@@ -23,7 +23,7 @@ public interface IBookService {
 
     Object sortAscByBookPrice();
 
-    public BookModule updateQuantityById(int id, int quantity, String token);
+    public BookModule updateQuantityById(int id, BookDTO quantity, String token);
 
     Object getByLowerPrice();
 

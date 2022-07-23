@@ -13,7 +13,7 @@ import java.util.List;
 public class Cart {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int cartId;
     @ManyToOne
     @JoinColumn(name = "bookId")
@@ -23,7 +23,7 @@ public class Cart {
     @JoinColumn(name = "userId")
     public UserRegistrationModule user;
     public int quantity;
-    public long totalPrice;
+    public double totalPrice;
     public Cart(UserRegistrationModule userId, BookModule bookId, int quantity,long totalPrice){
         this.cartId = cartId;
         this.book = bookId;

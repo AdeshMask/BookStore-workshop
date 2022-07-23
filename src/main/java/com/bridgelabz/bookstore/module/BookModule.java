@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class BookModule {
     @Id
     @Column(name = "bookId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int bookId;
     public String bookName;
     public int price;

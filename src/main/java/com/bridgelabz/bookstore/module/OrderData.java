@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderData {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int orderId;
 
     @OneToOne
