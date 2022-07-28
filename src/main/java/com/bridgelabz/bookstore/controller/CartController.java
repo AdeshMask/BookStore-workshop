@@ -43,4 +43,9 @@ public class CartController {
         RespnseDTO responseDTO = new RespnseDTO("Deleting all the cart Itmens",iCartService.updateQuantity(token,cartDTO,id));
         return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.ACCEPTED);
     }
+    @DeleteMapping("/emptybyid/{token}")
+    public ResponseEntity<RespnseDTO> emptyCartById(@RequestParam String token){
+        RespnseDTO responseDTO = new RespnseDTO("Deleting all the cart Itmens",iCartService.deleteByUserId(token));
+        return new ResponseEntity<RespnseDTO>(responseDTO,HttpStatus.ACCEPTED);
+    }
 }

@@ -37,11 +37,21 @@ public class CartServices implements ICartService{
     @Override
     public Object addToCart(CartDTO cartDTO, String token) {
         int id = tokenUtility.decodeToken(token);
-        Optional<UserRegistrationModule>  userData = userRepositoration.findById(id);
+        Optional<UserRegistrationModule> userData = userRepositoration.findById(id);
         Optional<BookModule> bookData = iBookService.getBookById(cartDTO.getBookId());
-        long totalPrice = cartDTO.getQuantity() * bookData.get().getPrice();
-        Cart cart = new Cart(userData.get(),bookData.get(),cartDTO.getQuantity(),totalPrice);
-        return cartRepo.save(cart);
+        if (userData.isPresent() && bookData.isPresent()) {
+            if (bookData.get().bookQuantity >= cartDTO.getQuantity() && cartDTO.getQuantity() > 0) {
+                Cart cart = cartRepo.findCartsByUserIdAndBookId(cartDTO.getBookId(), userData.get().id);
+                if (cart != null) {
+                    Cart cartDetails = updateQuantity(token, cartDTO, cart.getCartId());
+                    return cartDetails;
+                } else {
+                    double totalPrice = cartDTO.getQuantity() * bookData.get().getPrice();
+                    Cart cartDetails = new Cart(userData.get(), bookData.get(), cartDTO.getQuantity(), totalPrice);
+                    return cartRepo.save(cartDetails);
+                }
+            }throw (new BookStoreExceptionHandler("Book Out Of Stock"));
+        }throw (new BookStoreExceptionHandler("Record not Found"));
     }
 
     public List<Cart> getCartItems(String token) {
@@ -53,6 +63,7 @@ public class CartServices implements ICartService{
         UserRegistrationModule userRegistrationModule = iUserRegistration.getUserById(token);
         Optional<Cart> cart = cartRepo.findById(id);
         if (cart.isPresent() && userRegistrationModule != null){
+
             cartRepo.delete(cart.get());
             return "Record is deleted with id ";
         }
@@ -65,8 +76,14 @@ public class CartServices implements ICartService{
         return "All Cart Item Deleted";
     }
 
+    public String deleteByUserId(String token) {
+        int id = tokenUtility.decodeToken(token);
+        cartRepo.deleteByUserId(id);
+        return "Record Delete Successful";
+    }
+
     @Override
-    public Object updateQuantity(String token, CartDTO cartDTO, int id) {
+    public Cart updateQuantity(String token, CartDTO cartDTO, int id) {
         UserRegistrationModule userData = iUserRegistration.getUserById((token));
         if (cartRepo.findById(id).isPresent() && userData != null) {
             Cart cart = cartRepo.findById(id).get();

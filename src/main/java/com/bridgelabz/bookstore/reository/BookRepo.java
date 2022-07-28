@@ -19,11 +19,13 @@ public interface BookRepo extends JpaRepository<BookModule, Integer> {
     List<BookModule> sortAscByBookPrice();
 
     @Query(value = "SELECT * FROM book_module e WHERE e.book_id = :bookId", nativeQuery = true)
-    BookModule getBookById(BookModule bookId);
+    List<BookModule> findBookById(Integer bookId);
 
     @Query("FROM BookModule ORDER BY price DESC")
     List<BookModule> getByHigherPrice();
 
     @Query("FROM BookModule ORDER BY price ASC")
     List<BookModule> getByLowerPrice();
+
+
 }

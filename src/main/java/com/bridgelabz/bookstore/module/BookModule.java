@@ -51,4 +51,6 @@ public class BookModule {
         this.profilePic = bookDTO.profilePic;
     }
 
+    public BookModule(BookModule book, int quantity, double totalPrice) {
+    }
 }

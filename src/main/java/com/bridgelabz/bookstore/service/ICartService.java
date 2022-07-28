@@ -11,5 +11,6 @@ public interface ICartService {
 
     Object emptyCart();
 
-    Object updateQuantity(String token, CartDTO cartDTO, int id);
+    Cart updateQuantity(String token, CartDTO cartDTO, int id);
+    public String deleteByUserId(String token);
 }

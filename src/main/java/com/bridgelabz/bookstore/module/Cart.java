@@ -24,7 +24,7 @@ public class Cart {
     public UserRegistrationModule user;
     public int quantity;
     public double totalPrice;
-    public Cart(UserRegistrationModule userId, BookModule bookId, int quantity,long totalPrice){
+    public Cart(UserRegistrationModule userId, BookModule bookId, int quantity,double totalPrice){
         this.cartId = cartId;
         this.book = bookId;
         this.user = userId;

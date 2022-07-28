@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IOrderService {
 
-    OrderData placeOrder(OrderDTO orderDTO,String token);
+    List<OrderData> placeOrder(OrderDTO orderDTO,String token);
 
     OrderData getOrderID(String token);
 
